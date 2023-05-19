@@ -38,7 +38,7 @@ public class CallDetailsService {
 
 	public CallDetailsDTO createCustomerCallDetails(CallDetailsDTO callDetailsDTO) {
 		CallDetails entity = mapper.convertValue(callDetailsDTO, CallDetails.class);
-		callDetailsRepo.saveAndFlush(entity);
+		entity = callDetailsRepo.saveAndFlush(entity);
 		return mapper.convertValue(entity, CallDetailsDTO.class);
 	}
 }

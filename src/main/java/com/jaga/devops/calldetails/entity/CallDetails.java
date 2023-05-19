@@ -1,5 +1,6 @@
 package com.jaga.devops.calldetails.entity;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 
 import javax.persistence.Column;
@@ -17,7 +18,9 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Data
 @NoArgsConstructor
-public class CallDetails {
+public class CallDetails implements Serializable {
+
+	private static final long serialVersionUID = -146976585924084640L;
 
 	@Id
 	@GeneratedValue
