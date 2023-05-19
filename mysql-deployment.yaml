@@ -24,9 +24,9 @@ spec:
           imagePullPolicy: "IfNotPresent"
           env:
             - name: MYSQL_ROOT_PASSWORD
-              value: root
+              value: Jagath@123
             - name: MYSQL_DATABASE
-              value: test@123
+              value: devops_test
           ports:
             - containerPort: 3307
               name: mysql
