@@ -29,6 +29,13 @@ pipeline {
                 }
                 bat 'docker push jagath9923/calldetailsms'
                 // jagath9923/calldetailsms:%BUILD_NUMBER%'
+            }  
+        }
+        stage('Deploy to k8s'){
+            steps{
+                script{
+                    kubernetesDeploy (configs: 'deploymentservice.yaml',kubeconfigId: 'minikube_config_pwd')
+                }
             }
         }
     }
