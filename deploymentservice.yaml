@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: calldetailsms-k8s
-          image: jagath9923/calldetailsms # Image that will be used to containers in the cluster
+          image: jagath9923/calldetailsms:latest # Image that will be used to containers in the cluster
           imagePullPolicy: Always
           ports:
             - containerPort: 8080 # The port that the container is running on in the cluster
