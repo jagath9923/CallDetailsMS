@@ -1,0 +1,58 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Release.Name }}
+  labels:
+    {{- include "calldetailsms-charts.labels" . | nindent 4 }}
+spec:
+  {{- if not .Values.autoscaling.enabled }}
+  replicas: {{ .Values.replicaCount }}
+  {{- end }}
+  selector:
+    matchLabels:
+      {{- include "calldetailsms-charts.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      labels:
+        {{- include "calldetailsms-charts.selectorLabels" . | nindent 8 }}
+    spec:
+      containers:
+        - name: {{ .Values.container.name }}
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          ports:
+            - name: http
+              containerPort: {{ .Values.service.port }}
+              protocol: TCP
+          livenessProbe:
+            httpGet:
+              path: {{ .Values.service.livenessProbe.path }}
+              port: http
+              initialDelaySeconds: {{ .Values.service.livenessProbe.initialDelaySeconds }}
+              timeoutSeconds: {{ .Values.service.livenessProbe.timeoutSeconds }}
+              periodSeconds: {{ .Values.service.livenessProbe.periodSeconds }}
+              successThreshold: {{ .Values.service.livenessProbe.successThreshold }}
+              failureThreshold: {{ .Values.service.livenessProbe.failureThreshold }}
+          readinessProbe:
+            httpGet:
+              path: {{ .Values.service.readinessProbe.path }}
+              port: http
+              initialDelaySeconds: {{ .Values.service.readinessProbe.initialDelaySeconds }}
+              timeoutSeconds: {{ .Values.service.readinessProbe.timeoutSeconds }}
+              periodSeconds: {{ .Values.service.readinessProbe.periodSeconds }}
+              successThreshold: {{ .Values.service.readinessProbe.successThreshold }}
+              failureThreshold: {{ .Values.service.readinessProbe.failureThreshold }}
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
+#      {{- with .Values.nodeSelector }}
+#      nodeSelector:
+#        {{- toYaml . | nindent 8 }}
+#      {{- end }}
+#      {{- with .Values.affinity }}
+#      affinity:
+#        {{- toYaml . | nindent 8 }}
+#      {{- end }}
+#      {{- with .Values.tolerations }}
+#      tolerations:
+#        {{- toYaml . | nindent 8 }}
+#      {{- end }}
